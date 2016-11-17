@@ -9,7 +9,7 @@ from slacker import Slacker
 
 from book import Book
 
-API_URL = "https://www.safaribooksonline.com/api/v2/search/?query=*&sort=date_added"
+API_URL = "https://www.safaribooksonline.com/api/v2/search/?query=*&sort=date_added&page={}"
 BOTLOG = 'bot.log'
 CACHE = "books"
 CHANNEL = "#safaribooks-new"
@@ -31,7 +31,7 @@ logging.basicConfig(level=logging.DEBUG,
 def get_books():
     results = []
     for page in range(NUM_QUERIES):
-        resp = requests.get(API_URL + "&page=" + str(page))
+        resp = requests.get(API_URL.format(page))
         results += resp.json()["results"]  
     return results
 
