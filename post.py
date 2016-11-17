@@ -2,6 +2,7 @@ import logging
 import os
 import requests
 import shelve
+import socket
 import sys
 import time
 
@@ -14,6 +15,7 @@ BOTLOG = 'bot.log'
 CACHE = "books"
 CHANNEL = "#safaribooks-new"
 NUM_QUERIES = 2
+REMOTE = not "MacBook" in socket.gethostname()
 SEND_AS_BOTUSER = True
 SLEEP = 2
 try: 
@@ -61,6 +63,8 @@ if __name__ == "__main__":
             continue
         cache(bid, book)
 
-        logging.debug("- sending to slack channel")
-        post_message(book.title)
+        if REMOTE:
+            logging.debug("- sending to slack channel")
+            post_message(book.title)
+            
         time.sleep(SLEEP)
