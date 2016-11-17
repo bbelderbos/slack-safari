@@ -80,5 +80,4 @@ if __name__ == "__main__":
         if REMOTE:
             logging.debug("- sending to slack channel")
             post_message(book.title)
-            
-        time.sleep(SLEEP)
+            time.sleep(SLEEP)
