@@ -50,9 +50,12 @@ if __name__ == "__main__":
         bid = b.pop("archive_id")
         book = Book(bid, **b)
 
+        print("{} - {}".format(bid, book.title))
         if in_cache(bid):
+            print("- cached, skipping")
             continue
         cache(bid, book)
 
+        print("- sending to slack channel")
         post_message(book.title)
         time.sleep(2)
