@@ -15,6 +15,7 @@ CACHE = "books"
 CHANNEL = "#safaribooks-new"
 NUM_PAGES = 2
 SEND_AS_BOTUSER = True
+SLEEP = 2
 try: 
     TOKEN = os.environ["SLACK"]
 except KeyError: 
@@ -62,4 +63,4 @@ if __name__ == "__main__":
 
         logging.debug("- sending to slack channel")
         post_message(book.title)
-        time.sleep(2)
+        time.sleep(SLEEP)
