@@ -21,7 +21,10 @@ except KeyError:
     sys.exit(1)
 
 slack = Slacker(TOKEN)
-logging.basicConfig(filename='bot.log',level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG, 
+    format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+    datefmt='%m-%d %H:%M',
+    filename='bot.log')
 
 def get_books():
     resp = None
