@@ -14,9 +14,10 @@ from book import Book
 API_URL = "https://www.safaribooksonline.com/api/v2/search/?query=*&sort=date_added&page={}"
 BOTLOG = 'bot.log'
 CACHE = "books"
-CHANNELS = {
+CHANNEL_FILTERS = {
     "#safaribooks-new" : re.compile(r'.'),
     "#python" : re.compile(r'Python'),
+    "#machine-learning": re.compile(r'machine learning', re.I),
 }
 NUM_QUERIES = 2
 REMOTE = not "MacBook" in socket.gethostname()
@@ -56,7 +57,7 @@ def in_cache(bid):
         return bid in db
 
 def post_message(title):
-    for channel, regex in CHANNEL.items():
+    for channel, regex in CHANNEL_FILTERS.items():
         if regex.search(title):
             slack.chat.post_message(channel, title,
                 attachments=book.get_msg_details(),
