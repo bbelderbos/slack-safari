@@ -13,7 +13,10 @@ from book import Book
 API_URL = "https://www.safaribooksonline.com/api/v2/search/?query=*&sort=date_added&page={}"
 BOTLOG = 'bot.log'
 CACHE = "books"
-CHANNEL = "#safaribooks-new"
+CHANNELS = {
+    "#safaribooks-new" : re.compile(r'*'),
+    "#python" : re.compile(r'Python'),
+}
 NUM_QUERIES = 2
 REMOTE = not "MacBook" in socket.gethostname()
 SEND_AS_BOTUSER = True
@@ -52,9 +55,11 @@ def in_cache(bid):
         return bid in db
 
 def post_message(title):
-    slack.chat.post_message(CHANNEL, title,
-        attachments=book.get_msg_details(),
-        as_user=SEND_AS_BOTUSER)
+    for channel, regex in CHANNEL.items():
+        if regex.search(title):
+            slack.chat.post_message(channel, title,
+                attachments=book.get_msg_details(),
+                as_user=SEND_AS_BOTUSER)
 
 if __name__ == "__main__":
     books = get_books()
