@@ -41,6 +41,7 @@ def get_books():
     for page in range(NUM_QUERIES):
         resp = requests.get(API_URL.format(page))
         results += resp.json()["results"]  
+        time.sleep(SLEEP)
     return results
 
 def cache_book(bid, book):
