@@ -15,7 +15,7 @@ API_URL = "https://www.safaribooksonline.com/api/v2/search/?query=*&sort=date_ad
 BOTLOG = 'bot.log'
 CACHE = "books"
 CHANNELS = {
-    "#safaribooks-new" : re.compile(r'*'),
+    "#safaribooks-new" : re.compile(r'.'),
     "#python" : re.compile(r'Python'),
 }
 NUM_QUERIES = 2
