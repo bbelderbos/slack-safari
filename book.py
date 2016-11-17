@@ -3,6 +3,7 @@ import re
 from pyisbn import Isbn13
 
 AMAZON = "https://www.amazon.com/dp/{}"
+AMAZON_SEARCH = "https://www.amazon.com/gp/search/?field-keywords={}"
 TEMPLATE = [
     {
         "title": "",
@@ -40,9 +41,9 @@ class Book:
             if type(v) == list:
                 v = ", ".join(v)
             self.b[k] = v
+        self.title = self.b["title"]
         self.b["synopsis"] = self._shorten()
         self.b["amazon"] = self._amazon_url()
-        self.title = self.b["title"]
     
     def _shorten(self):
         text = self._strip_html(self.b["description"])
@@ -52,8 +53,12 @@ class Book:
         return re.sub('<[^<]+?>', '', text)
 
     def _amazon_url(self):
-        isbn10 = str(Isbn13(self.b["isbn"]).convert())
-        return AMAZON.format(isbn10)
+        try:
+            isbn10 = str(Isbn13(self.b["isbn"]).convert())
+            return AMAZON.format(isbn10)
+        except KeyError:
+            search_str = re.sub(r'[^A-Za-z0-9]', '+', self.title)
+            return AMAZON_SEARCH.format(search_str)
 
     def get_msg_details(self):
         attachments = list(TEMPLATE)
@@ -77,3 +82,8 @@ if __name__ == "__main__":
     print(b)
     print("\n--\nAttachments:")
     print(b.get_msg_details())
+    print(b._amazon_url())
+    info.pop("isbn")
+    b2 = Book(bookid, **info)
+    assert "isbn" not in b2.b
+    print(b2._amazon_url())
