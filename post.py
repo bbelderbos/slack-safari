@@ -42,6 +42,11 @@ def cache(bid, book):
         if not bid in db:
             db[bid] = book
 
+def del_from_cache(bid):
+    with shelve.open(CACHE) as db:
+        if bid in db:
+            del db[bid]
+
 def in_cache(bid):
     with shelve.open(CACHE) as db:
         return bid in db
