@@ -1,6 +1,5 @@
 import logging
 import os
-from pprint import pprint as pp
 import requests
 import shelve
 import sys
