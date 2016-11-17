@@ -1,3 +1,4 @@
+import logging
 import os
 from pprint import pprint as pp
 import requests
@@ -21,6 +22,7 @@ except KeyError:
     sys.exit(1)
 
 slack = Slacker(TOKEN)
+logging.basicConfig(filename='bot.log',level=logging.DEBUG)
 
 def get_books():
     resp = None
@@ -50,12 +52,12 @@ if __name__ == "__main__":
         bid = b.pop("archive_id")
         book = Book(bid, **b)
 
-        print("{} - {}".format(bid, book.title))
+        logging.debug("{} - {}".format(bid, book.title))
         if in_cache(bid):
-            print("- cached, skipping")
+            logging.debug("- cached, skipping")
             continue
         cache(bid, book)
 
-        print("- sending to slack channel")
+        logging.debug("- sending to slack channel")
         post_message(book.title)
         time.sleep(2)
