@@ -46,7 +46,7 @@ def post_message(title):
 
 if __name__ == "__main__":
     books = get_books()
-    for i, b in enumerate(books, 1):
+    for b in books:
         bid = b.pop("archive_id")
         book = Book(bid, **b)
 
