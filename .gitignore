@@ -1,0 +1,5 @@
+venv
+books*
+*pyc
+*swp
+__pycache__
