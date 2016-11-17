@@ -56,7 +56,7 @@ class Book:
         try:
             isbn10 = str(Isbn13(self.b["isbn"]).convert())
             return AMAZON.format(isbn10)
-        except KeyError:
+        except:
             search_str = re.sub(r'[^A-Za-z0-9]', '+', self.title)
             return AMAZON_SEARCH.format(search_str)
 
