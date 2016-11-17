@@ -37,7 +37,7 @@ def get_books():
         results += resp.json()["results"]  
     return results
 
-def cache(bid, book):
+def cache_book(bid, book):
     with shelve.open(CACHE) as db:
         if not bid in db:
             db[bid] = book
@@ -66,7 +66,7 @@ if __name__ == "__main__":
         if in_cache(bid):
             logging.debug("- cached, skipping")
             continue
-        cache(bid, book)
+        cache_book(bid, book)
 
         if REMOTE:
             logging.debug("- sending to slack channel")
