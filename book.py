@@ -2,9 +2,35 @@ import json
 import re
 from pyisbn import Isbn13
 
-from data import template
-
 AMAZON = "https://www.amazon.com/dp/{}"
+TEMPLATE = [
+    {
+        "title": "",
+        "fields": [
+            {
+                "title": "content-type",
+                "value": "",
+                "short": "true",
+            },
+            {
+                "title": "pages",
+                "value": "",
+                "short": "true",
+            }
+        ],
+        "author_name": "",
+        "image_url": "",
+    },
+    {
+        "title": "Synopsis",
+        "text": "",
+    },
+    {
+        "title": "Amazon",
+        "text": "",
+    }
+    
+]
 
 class Book: 
     def __init__(self, bid, **kwargs):
@@ -30,7 +56,7 @@ class Book:
         return AMAZON.format(isbn10)
 
     def get_msg_details(self):
-        attachments = template()
+        attachments = list(TEMPLATE)
         attachments[0]["title"] = self.b["title"]
         attachments[0]["author_name"] = self.b["authors"]
         attachments[0]["image_url"] = self.b["cover_url"]
