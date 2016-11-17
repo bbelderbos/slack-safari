@@ -10,6 +10,7 @@ from slacker import Slacker
 from book import Book
 
 API_URL = "https://www.safaribooksonline.com/api/v2/search/?query=*&sort=date_added"
+BOTLOG = 'bot.log'
 CACHE = "books"
 CHANNEL = "#safaribooks-new"
 NUM_PAGES = 2
@@ -24,7 +25,7 @@ slack = Slacker(TOKEN)
 logging.basicConfig(level=logging.DEBUG, 
     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
     datefmt='%m-%d %H:%M',
-    filename='bot.log')
+    filename=BOTLOG)
 
 def get_books():
     results = []
