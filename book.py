@@ -27,11 +27,16 @@ TEMPLATE = [
         "text": "",
     },
     {
-        "title": "Amazon",
+        "title": "Queue on Safaribooks",
+        "text": "",
+    },
+    {
+        "title": "Amazon reviews",
         "text": "",
     }
     
 ]
+QUEUE_LINK = "https://www.safaribooksonline.com/s/queue-on-safari?identifiers={}"
 
 class Book: 
     def __init__(self, bid, **kwargs):
@@ -43,11 +48,15 @@ class Book:
             self.b[k] = v
         self.title = self.b["title"]
         self.b["synopsis"] = self._shorten()
+        self.b["queue_link"] = self._queue_link()
         self.b["amazon"] = self._amazon_url()
     
     def _shorten(self):
         text = self._strip_html(self.b["description"])
         return text.split(".")[0]
+
+    def _queue_link(self):
+        return QUEUE_LINK.format(self.bid)
 
     def _strip_html(self, text):
         return re.sub('<[^<]+?>', '', text)
@@ -62,13 +71,14 @@ class Book:
 
     def get_msg_details(self):
         attachments = list(TEMPLATE)
-        attachments[0]["title"] = self.b["title"]
+        attachments[0]["title"] = self.b["publishers"]
         attachments[0]["author_name"] = self.b["authors"]
         attachments[0]["image_url"] = self.b["cover_url"]
         attachments[0]["fields"][0]["value"] = self.b["content_type"]
         attachments[0]["fields"][1]["value"] = self.b["virtual_pages"]
         attachments[1]["text"] = self.b["synopsis"]
-        attachments[2]["text"] = self.b["amazon"]
+        attachments[2]["text"] = self.b["queue_link"]
+        attachments[3]["text"] = self.b["amazon"]
         return json.dumps(attachments)
 
     def __str__(self):
@@ -87,3 +97,4 @@ if __name__ == "__main__":
     b2 = Book(bookid, **info)
     assert "isbn" not in b2.b
     print(b2._amazon_url())
+    print(b2._queue_link())
