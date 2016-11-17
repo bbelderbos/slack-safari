@@ -27,7 +27,6 @@ logging.basicConfig(level=logging.DEBUG,
     filename='bot.log')
 
 def get_books():
-    resp = None
     results = []
     for page in range(NUM_PAGES):
         resp = requests.get(API_URL + "&page=" + str(page))
