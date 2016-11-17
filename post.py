@@ -13,7 +13,7 @@ API_URL = "https://www.safaribooksonline.com/api/v2/search/?query=*&sort=date_ad
 BOTLOG = 'bot.log'
 CACHE = "books"
 CHANNEL = "#safaribooks-new"
-NUM_PAGES = 2
+NUM_QUERIES = 2
 SEND_AS_BOTUSER = True
 SLEEP = 2
 try: 
@@ -30,7 +30,7 @@ logging.basicConfig(level=logging.DEBUG,
 
 def get_books():
     results = []
-    for page in range(NUM_PAGES):
+    for page in range(NUM_QUERIES):
         resp = requests.get(API_URL + "&page=" + str(page))
         results += resp.json()["results"]  
     return results
