@@ -3,3 +3,4 @@ books*
 *pyc
 *swp
 __pycache__
+bot.log
