@@ -27,11 +27,15 @@ TEMPLATE = [
         "text": "",
     },
     {
-        "title": "Queue on Safaribooks",
+        "title": "View on Safaribooks",
         "text": "",
     },
     {
-        "title": "Amazon reviews",
+        "title": "Queue it on Safaribooks",
+        "text": "",
+    },
+    {
+        "title": "Amazon",
         "text": "",
     }
     
@@ -77,8 +81,9 @@ class Book:
         attachments[0]["fields"][0]["value"] = self.b["content_type"]
         attachments[0]["fields"][1]["value"] = self.b["virtual_pages"]
         attachments[1]["text"] = self.b["synopsis"]
-        attachments[2]["text"] = self.b["queue_link"]
-        attachments[3]["text"] = self.b["amazon"]
+        attachments[2]["text"] = self.b["web_url"]
+        attachments[3]["text"] = self.b["queue_link"]
+        attachments[4]["text"] = self.b["amazon"]
         return json.dumps(attachments)
 
     def __str__(self):
