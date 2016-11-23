@@ -11,14 +11,10 @@ from slacker import Slacker
 
 from book import Book
 
+ALL_BOOKS_STR = 'safaribooks'
 API_URL = "https://www.safaribooksonline.com/api/v2/search/?query=*&sort=date_added&page={}"
 BOTLOG = 'bot.log'
 CACHE = "books"
-CHANNEL_FILTERS = {
-    "#safaribooks-new" : re.compile(r'.'),
-    "#python" : re.compile(r'Python'),
-    "#machine-learning": re.compile(r'machine learning', re.I),
-}
 DEFAULT_NUM_QUERIES = 2
 NUM_QUERIES = int(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_NUM_QUERIES
 REMOTE = not "MacBook" in socket.gethostname()
@@ -31,6 +27,9 @@ except KeyError:
     sys.exit(1)
 
 slack = Slacker(TOKEN)
+resp = slack.channels.list()
+channels = [chan["name"] for chan in resp.body["channels"] if chan["is_member"]]
+
 logging.basicConfig(level=logging.DEBUG, 
     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
     datefmt='%m-%d %H:%M',
@@ -59,11 +58,18 @@ def in_cache(bid):
         return bid in db
 
 def post_message(title):
-    for channel, regex in CHANNEL_FILTERS.items():
-        if regex.search(title):
-            slack.chat.post_message(channel, title,
+    for channel in channels:
+        channel = normalize_channel_name(channel)
+        if ALL_BOOKS_STR in channel or channel in title:
+            slack.chat.post_message('#' + channel, title,
                 attachments=book.get_msg_details(),
                 as_user=SEND_AS_BOTUSER)
+
+def normalize_channel_name(channel):
+    strip_chars = ('-', )
+    for s in strip_chars:
+        channel = channel.replace(s, ' ')
+    return channel
 
 if __name__ == "__main__":
     books = get_books()
