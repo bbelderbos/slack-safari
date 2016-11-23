@@ -1,8 +1,18 @@
 # slack-safari
 
-This project uses Python 3
+## Intro
 
-First create a Python virtual env: 
+This script checks the [Safaribooksonline](http://safaribooksonline.com) API for new books and posts them to one or more channels:
+
+- Create a bot user
+- Add the bot to one or more channels: a channel with the string 'safaribooks' in it will receive all updates
+- Channels named like 'string-string' will do a title text match on 'string string', so adding the bot to a channel called 'data-science' will receive all new books with "data science" in the lowercase'd title, e.g. "Data Science with Java"
+
+Each book has links to safaribooksonline (book page, and to queue it) and Amazon (attempt)
+
+## Deployment 
+
+First create a Python virtual env (this project requires python3, it's time to move on, not?): 
 
 	virtualenv venv
 	(might need -p python3)
