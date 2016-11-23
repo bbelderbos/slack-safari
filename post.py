@@ -16,7 +16,7 @@ API_URL = "https://www.safaribooksonline.com/api/v2/search/?query=*&sort=date_ad
 BOTLOG = 'bot.log'
 CACHE = "books"
 NUM_QUERIES = 2
-REMOTE = not "MacBook" in socket.gethostname()
+REMOTE = not "MacBook" in socket.gethostname() 
 SEND_AS_BOTUSER = True
 SLEEP = 2
 try: 
@@ -71,6 +71,9 @@ def normalize_channel_name(channel):
     return channel
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        REMOTE = True
+
     books = get_books()
     for b in books:
         bid = b.pop("archive_id")
