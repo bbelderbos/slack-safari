@@ -11,7 +11,6 @@ from slacker import Slacker
 
 from book import Book
 
-ALL_BOOKS_STR = 'safaribooks'
 API_URL = "https://www.safaribooksonline.com/api/v2/search/?query=*&sort=date_added&page={}"
 BOTLOG = 'bot.log'
 CACHE = "books"
@@ -27,7 +26,7 @@ except KeyError:
 
 slack = Slacker(TOKEN)
 resp = slack.channels.list()
-channels = [chan["name"] for chan in resp.body["channels"] if chan["is_member"]]
+bot_channels = [chan["name"] for chan in resp.body["channels"] if chan["is_member"]]
 
 logging.basicConfig(level=logging.DEBUG, 
     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
@@ -57,17 +56,24 @@ def in_cache(bid):
         return bid in db
 
 def post_message(title):
-    for channel in channels:
-        channel = normalize_channel_name(channel)
-        if ALL_BOOKS_STR in channel or channel in title:
+    for channel in bot_channels:
+        if send_to_channel(channel, title):
             slack.chat.post_message('#' + channel, title,
                 attachments=book.get_msg_details(),
                 as_user=SEND_AS_BOTUSER)
 
+def send_to_channel(channel, title):
+    channel = normalize_channel_name(channel)
+    if 'safaribooks' in channel:
+        return True
+    if channel in title:
+        return True
+    return False
+    
 def normalize_channel_name(channel):
-    strip_chars = ('-', )
-    for s in strip_chars:
-        channel = channel.replace(s, ' ')
+    replace_chars = ('-', )
+    for char in replace_chars:
+        channel = channel.replace(char, ' ')
     return channel
 
 if __name__ == "__main__":
