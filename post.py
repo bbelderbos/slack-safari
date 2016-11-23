@@ -58,8 +58,7 @@ def in_cache(bid):
 def post_message(book):
     for channel in bot_channels:
         if send_to_channel(channel, book.title):
-            slack.chat.post_message('#' + channel, book.title_link,
-                attachments=book.get_msg_details(),
+            slack.chat.post_message('#' + channel, book.msg(),
                 as_user=SEND_AS_BOTUSER)
 
 def send_to_channel(channel, title):
@@ -73,7 +72,6 @@ def send_to_channel(channel, title):
     
 def normalize_channel_name(channel):
     # as per slack convention channels won't have dots / special chars 
-    # and no ucase (lcase conversion is defensive)
     channel = channel.lower()
     replace_chars = ('-', '_', ) 
     for char in replace_chars:
