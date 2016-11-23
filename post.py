@@ -64,6 +64,7 @@ def post_message(book):
 
 def send_to_channel(channel, title):
     channel = normalize_channel_name(channel)
+    title = title.lower()
     if 'safaribooks' in channel:
         return True
     if channel in title:
@@ -71,7 +72,10 @@ def send_to_channel(channel, title):
     return False
     
 def normalize_channel_name(channel):
-    replace_chars = ('-', )
+    # as per slack convention channels won't have dots / special chars 
+    # and no ucase (lcase conversion is defensive)
+    channel = channel.lower()
+    replace_chars = ('-', '_', ) 
     for char in replace_chars:
         channel = channel.replace(char, ' ')
     return channel
