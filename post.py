@@ -55,10 +55,10 @@ def in_cache(bid):
     with shelve.open(CACHE) as db:
         return bid in db
 
-def post_message(title):
+def post_message(book):
     for channel in bot_channels:
-        if send_to_channel(channel, title):
-            slack.chat.post_message('#' + channel, title,
+        if send_to_channel(channel, book.title):
+            slack.chat.post_message('#' + channel, book.title_link,
                 attachments=book.get_msg_details(),
                 as_user=SEND_AS_BOTUSER)
 
@@ -93,5 +93,5 @@ if __name__ == "__main__":
 
         if REMOTE:
             logging.debug("- sending to slack channel")
-            post_message(book.title)
+            post_message(book)
             time.sleep(SLEEP)

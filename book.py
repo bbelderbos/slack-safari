@@ -27,7 +27,7 @@ TEMPLATE = [
         "text": "",
     },
     {
-        "title": "Links",
+        "title": "",
         "fields": [
             {
                 "value": "",
@@ -37,10 +37,6 @@ TEMPLATE = [
                 "value": "",
                 "short": "true",
             },
-            {
-                "value": "",
-                "short": "true",
-            }
         ],
     },
     
@@ -56,13 +52,14 @@ class Book:
                 v = ", ".join(v)
             self.b[k] = v
         self.title = self.b["title"]
+        self.title_link = "*<{}|{}>*".format(self.b["web_url"], self.title)
         self.b["synopsis"] = self._shorten()
         self.b["queue_link"] = self._queue_link()
         self.b["amazon"] = self._amazon_url()
     
     def _shorten(self):
         text = self._strip_html(self.b["description"])
-        return text.split(".")[0]
+        return '> ' + text.split(".")[0] + " ..."
 
     def _queue_link(self):
         return QUEUE_LINK.format(self.bid)
@@ -79,9 +76,8 @@ class Book:
             return AMAZON_SEARCH.format(search_str)
 
     def get_msg_details(self):
-        safari_link = "<{}|Safaribooks>".format(self.b["web_url"])
-        queue_link = "<{}|Queue>".format(self.b["queue_link"])
-        amazon_link = "<{}|Amazon>".format(self.b["amazon"])
+        queue_link = "<{}|Queue this book>".format(self.b["queue_link"])
+        amazon_link = "<{}|Amazon book page>".format(self.b["amazon"])
         attachments = list(TEMPLATE)
         attachments[0]["title"] = self.b["publishers"]
         attachments[0]["author_name"] = self.b["authors"]
@@ -89,9 +85,8 @@ class Book:
         attachments[0]["fields"][0]["value"] = self.b["content_type"]
         attachments[0]["fields"][1]["value"] = self.b["virtual_pages"]
         attachments[1]["text"] = self.b["synopsis"]
-        attachments[2]["fields"][0]["value"] = safari_link
-        attachments[2]["fields"][1]["value"] = queue_link
-        attachments[2]["fields"][2]["value"] = amazon_link
+        attachments[2]["fields"][0]["value"] = queue_link
+        attachments[2]["fields"][1]["value"] = amazon_link
         return json.dumps(attachments)
 
     def __str__(self):
