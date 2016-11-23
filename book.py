@@ -27,17 +27,22 @@ TEMPLATE = [
         "text": "",
     },
     {
-        "title": "View on Safaribooks",
-        "text": "",
+        "title": "Links",
+        "fields": [
+            {
+                "value": "",
+                "short": "true",
+            },
+            {
+                "value": "",
+                "short": "true",
+            },
+            {
+                "value": "",
+                "short": "true",
+            }
+        ],
     },
-    {
-        "title": "Queue it on Safaribooks",
-        "text": "",
-    },
-    {
-        "title": "Amazon",
-        "text": "",
-    }
     
 ]
 QUEUE_LINK = "https://www.safaribooksonline.com/s/queue-on-safari?identifiers={}"
@@ -74,6 +79,9 @@ class Book:
             return AMAZON_SEARCH.format(search_str)
 
     def get_msg_details(self):
+        safari_link = "<{}|Safaribooks>".format(self.b["web_url"])
+        queue_link = "<{}|Queue>".format(self.b["queue_link"])
+        amazon_link = "<{}|Amazon>".format(self.b["amazon"])
         attachments = list(TEMPLATE)
         attachments[0]["title"] = self.b["publishers"]
         attachments[0]["author_name"] = self.b["authors"]
@@ -81,9 +89,9 @@ class Book:
         attachments[0]["fields"][0]["value"] = self.b["content_type"]
         attachments[0]["fields"][1]["value"] = self.b["virtual_pages"]
         attachments[1]["text"] = self.b["synopsis"]
-        attachments[2]["text"] = self.b["web_url"]
-        attachments[3]["text"] = self.b["queue_link"]
-        attachments[4]["text"] = self.b["amazon"]
+        attachments[2]["fields"][0]["value"] = safari_link
+        attachments[2]["fields"][1]["value"] = queue_link
+        attachments[2]["fields"][2]["value"] = amazon_link
         return json.dumps(attachments)
 
     def __str__(self):
