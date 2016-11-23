@@ -15,8 +15,7 @@ ALL_BOOKS_STR = 'safaribooks'
 API_URL = "https://www.safaribooksonline.com/api/v2/search/?query=*&sort=date_added&page={}"
 BOTLOG = 'bot.log'
 CACHE = "books"
-DEFAULT_NUM_QUERIES = 2
-NUM_QUERIES = int(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_NUM_QUERIES
+NUM_QUERIES = 2
 REMOTE = not "MacBook" in socket.gethostname()
 SEND_AS_BOTUSER = True
 SLEEP = 2
