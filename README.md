@@ -1,17 +1,29 @@
 # slack-safari
 
-create + activate venv
+This project uses Python 3
 
-pip install -r requirements.txt 
+First create a Python virtual env: 
 
-Create a bot / Slack token:
+	virtualenv venv
+	(might need -p python3)
 
-http://my.slack.com/apps/manage/custom-integrations
+	source venv/bin/activate
 
-Set token in env (shell or in dotfile like .bashrc)
+Install requirements:
+	
+	pip install -r requirements.txt 
 
-export SLACK=xyz 
+Get a Slack token for the bot [here](http://my.slack.com/apps/manage/custom-integrations).
 
-Put post.py in cronjob 
+Set the token in an environment variable:
 
-I typically call Safaribook's API every hour, caching already sent titles in a shelve file (books)
+	export SLACK=xyz 
+
+Put the safaribot.py in an hourly (or daily) cronjob.
+
+On my server I installed py3 in my $HOME so I had to export the PYTHONPATH env variable too:
+
+	export SLACK=xyz && export PYTHONPATH=<path-to>/python<version>/site-packages && 
+		cd <path-to>/slack_safari && <path-to>/python3.5 safaribot.py
+
+Enjoy!
