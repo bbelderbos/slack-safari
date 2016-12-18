@@ -15,7 +15,7 @@ class Book:
                 v = ", ".join(v)
             self.b[k] = v
         self.title = self.b["title"]
-        self.authors = self.b["authors"]
+        self.authors = self.b.get("authors", "")
         self.publishers = self.b["publishers"]
         self.page_count = self.b["virtual_pages"]
         self.cover = self.b["cover_url"]
