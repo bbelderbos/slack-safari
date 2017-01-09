@@ -55,6 +55,10 @@ def in_cache(bid):
     with shelve.open(CACHE) as db:
         return bid in db
 
+def clear_cache():
+    with shelve.open(CACHE) as db:
+        db.clear()
+    
 def post_message(book):
     for channel in bot_channels:
         if send_to_channel(channel, book.title):
