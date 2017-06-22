@@ -17,7 +17,7 @@ class Book:
         self.title = self.b["title"]
         self.authors = self.b.get("authors", "")
         self.publishers = self.b["publishers"]
-        self.page_count = self.b["virtual_pages"]
+        self.page_count = self.b.get("virtual_pages", 0)
         self.cover = self.b["cover_url"]
         self.urls = {
             "safari" : "*<{}|{}>*".format(self.b["web_url"], self.title), 
